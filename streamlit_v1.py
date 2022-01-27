@@ -58,11 +58,20 @@ if uploaded_file is not None:
         return floaters4
     order_names=["ANSERIFORMES","CAPRIMULGIFORMES","CHARADRIIFORMES","CORACIIFORMES","CUCULIFORMES","GAVIIFORMES","PASSERIFORMES","PELECANIFORMES","PICIFORMES","PODICIPEDIFORMES","PROCELLARIIFORMES","SULIFORMES"]
 
-    def predict_birds_order(file):
+#    def predict_birds_order(file):
+#        best_model_1 = tf.keras.models.load_model('saved_models/order_es.h5')
+#        preds1=best_model_1.predict(file)
+#        preds2=np.argmax(preds1,axis=1)
+#        return order_names[int(preds2)-1]
+
+    def predict_birds_order_with_prob(file):
         best_model_1 = tf.keras.models.load_model('saved_models/order_es.h5')
         preds1=best_model_1.predict(file)
         preds2=np.argmax(preds1,axis=1)
-        return order_names[int(preds2)-1]
+        max_pred=np.max(preds1)
+        max_pred_perc=max_pred*100
+        format_pred_perc = "{:.2f}".format(max_pred_perc)
+        return format_pred_perc, order_names[int(preds2)-1]
 
 
     image_new=load_image_new(uploaded_file)
@@ -70,7 +79,8 @@ if uploaded_file is not None:
     st.image(image_new, caption='Uploaded Image.', use_column_width=True)
     st.write("")
     st.write("Classifying birb...")
-    label = predict_birds_order(image_new)
+    #label = predict_birds_order(image_new)
+    label_of_probability= predict_birds_order_with_prob(image_new)
 
-
-    st.write(f'This bird belongs to the {label} order!')
+    st.write(f'The model is {label_of_probability[0]}% sure that this bird belongs to the {label_of_probability[1]} order!')
+    #st.write(f'This bird belongs to the {label} order!')
