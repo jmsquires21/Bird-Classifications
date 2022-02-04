@@ -2,3 +2,5 @@
 test_images/
 saved_models/
 previous_iterations/
+Tables/class_map_dir_output_new_classes_f.csv
+building_classifications/

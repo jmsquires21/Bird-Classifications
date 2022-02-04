@@ -22,7 +22,7 @@ tf.random.set_seed(42)
 
 #load models first to improve performance
 order_model=tf.keras.models.load_model('saved_models/order_est_v2.h5')
-family_model=tf.keras.models.load_model('saved_models/species_est_g.h5')
+family_model=tf.keras.models.load_model('saved_models/family_v2.h5')
 species_model=tf.keras.models.load_model('saved_models/species_t3.h5')
 
 # streamlit code
@@ -339,7 +339,7 @@ if page == "Tool":
         st.write("")
         st.write("*Fun bird facts provided by [The Cornell Lab](https://www.allaboutbirds.org/guide/browse/taxonomy) and [Wikipedia](https://en.wikipedia.org/wiki/Main_Page)  *")
 
-# Page to read about the project 
+# Page to read about the project
 elif page == "About":
     st.title("")
     st.write("")

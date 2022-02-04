@@ -23,7 +23,7 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 
 ### Success Metrics:
 * Optimize for the highest accuracy score at the taxonomic order, family, and species level
-* Create Streamlit application to classify new bird images in real time
+* Create application to classify unseen bird images
 
 ### Methodology
 1.	Explore the data, clean, transform images into arrays, condense and scale
@@ -34,9 +34,9 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
     * Family (35 classes)
     * Species (200 classes)
 5. Iterate and experiment with the following deep learning techniques to optimize performance:
-  * Image data augmentation (random rotation and random mirroring of the images in Tensorflow)
-  * Transfer learning - leveraging a pretrained model
-  * Exploring regularization techniques to reduce overfitting, early stopping, and batch normalization
+    * Image data augmentation (random rotation and random mirroring of the images in Tensorflow)
+    * Transfer learning - leveraging a pretrained model
+    * Exploring regularization techniques to reduce overfitting, early stopping, and batch normalization
 6. Create an interactive tool in Streamlit to classify unseen images
 
 
@@ -69,8 +69,7 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 
 ![Hierarchy](/Visualizations/hierarchy_new.png)
 
-* In the original dataset, we were given the species name along with a collection of images (shown on the right). You can see that each class of species shows only one bird in each photo, and they are generally scaled towards the center of the image. For this reason, we did not have to consider bounding boxes or additional image pre-processing.
-* I used the [The Cornell Lab of Ornithology's Taxonomic Guide](https://www.allaboutbirds.org/guide/browse/taxonomy) to match each of the 200 species to their respective taxonomical order and family.
+* In the original dataset, we were given the species name along with a collection of images (shown on the right). You can see that each class of species shows only one bird in each photo, and they are generally scaled towards the center of the image. For this reason, we did not have to consider bounding boxes or additional image pre-processing. I used the [The Cornell Lab of Ornithology's Taxonomic Guide](https://www.allaboutbirds.org/guide/browse/taxonomy) to match each of the 200 species to their respective taxonomical order and family.
 
 
 ![Order bar chart](/Visualizations/order_hist.png)
@@ -94,32 +93,36 @@ The final three neural network models were selected and compiled below:
 | Class Level    | Number of Classes | Baseline Accuracy | Training Accuracy | Testing Accuracy |
 |:--------------:|:-----------------:|:-----------------:|:-----------------:|:----------------:|
 |      Order     | 12                | 67.0%             | 99.4%             | 87.6%            |
-|     Family     | 35                | 15.2%             | 98.7%             | 61.1%            |
+|     Family     | 35                | 15.2%             | 99.0%             | 64.0%            |
 |     Species    | 200               | 0.5%              | 86.3%             | 30.5%            |
 
------------------INSERT Chart of model pros & Cons
+Highlights:
+* All models significantly outperformed their baseline accuracies
+* Data augmentation and transfer learning improved accuracy across the hierarchy
+
+
+Drawbacks:
+* All models were very overfit, despite regularization techniques implemented
+* With only 60 images per species, we did not have enough data to improve the species and family model scores to a confident level.
+
+
+Additional Notes:
 * As expected, we see that the model that was run at the order level (12 classes) had the highest performance at 87.6%. This model was also the most flexible in that it responded positively to L2 regularization, batch normalization, and dropout layers.
 * The family and species level models had a significantly lower accuracy level due to the increase in number of classes. Additionally, I found that these models reacted more unfavorably to regularization or further dense layers than the order model.
 
-#### Taxonomic Order Modeling Results
-
+### Taxonomic Order Modeling Results
 ![Confusion Matrix Order](/Visualizations/order_confusion_matrix.png)
 
 * Given that the Order model had the best scores and can be easily summarized in a confusion matrix,  we can see that Passeriformes performed the best at 96% accuracy. This is intuitive because Passeriformes was the majority class, making up 67% of the images.
 * On the other hand, we see that Gaviiformes and Cuculiformes struggled with only 33% and 35% accuracy, respectively. They were both relatively mid to small classes.
 * Gaviiformes' predictions were across the board, and there wasn't a dominant prediction class. However, Cuculiformes were classified as Passeriformes 60% of the time. Upon further manual inspection, they proved to be difficult to distinguish from various Passeriformes species.
 
+# Conclusion:
 ### Learnings & Next Steps :
 * Given the extensive number of classes in the original dataset (the 200 species), this was a big limiting factor in reaching reasonably high accuracy in our model. By aggregating the data using the taxonomic hierarchy structure, we were able to significantly improve our predictions and provide a tiered approach to accuracy.
 * The models seemed to strongly benefit from data augmentation, with adding Tensorflow's layers.RandomRotation and layers.RandomFlip step in the Sequential() setup. Leveraging an existing pre-trained model and implementing transfer learning also had a huge impact on the accuracy levels. I used MobileNetV2. Early stopping, regularization, and adding dropout layers also benefitted the order model's performance.
-* In order to further improve the accuracy of our neural network, I would pursue obtaining more computing power to run more advanced models. I used Google Colab Pro, but I'd like to find a more scalable solution with more GPU instances in the future. Google Cloud and AWS are two options I'd consider to eliminate bandwidth issues.
-* In the future, I'd like to get more image data to improve the model. 60 images per class 
-*Inbalanced classes
-
-
-
-
-
+* In order to further improve the accuracy of the model, I would pursue obtaining more computing power to run more advanced models. I used Google Colab Pro, but I'd like to find a more scalable solution with more GPU instances in the future. Google Cloud and AWS are two options I'd consider to eliminate bandwidth issues.
+* In the future, I'd like to get more images to improve the model. 60 images per class proved to not be enough data to accurately classify bird images at the species level. Augmenting the data through slight rotations and mirroring helped but it wasn't sufficient to handle the imbalanced classes. On that note, it would be especially helpful to gather more images in the smaller classes that performed poorly, such as the Gaviiformes and Cuculiformes.
 
 
 
