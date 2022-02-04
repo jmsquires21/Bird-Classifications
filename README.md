@@ -2,7 +2,7 @@
 # **Classifying North American Birds**
 ### By: Jamie Squires
 
-# Executive Summary
+
 ## Background & Overview
 
 In recent years, image classification has become an integral aspect of machine learning. Within computer vision, there are focuses on image classification, localization, image segmentation, and object detection. Among these areas, image classification is generally regarded as the most fundamental piece of digital image analysis. Although image classification can be approached by both supervised and unsupervised learning methods, deep learning has emerged as the leader in image classification. In particular, the use of neural networks, specifically convolutional neural networks have become the go-to practice in this area.
@@ -29,15 +29,15 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 1.	Explore the data, clean, transform images into arrays, condense and scale
 2.	Run preliminary models, assess levels of accuracy
 3.  In order to reduce the large number of classes (200), individual research was conducted to add in the taxonomic order and family into the dataset in order to improve the model's predictive power. The taxonomic hierarchy information came from the [The Cornell Lab of Ornithology](https://www.allaboutbirds.org/guide/browse/taxonomy).
-3.	We will build 3 separate neural networks to classify birds at the following levels:
+4.	We will build 3 separate neural networks to classify birds at the following levels:
     * Order (12 classes)
     * Family (35 classes)
     * Species (200 classes)
-4. We will iterate and experiment with the following deep learning techniques to optimize performance:
+5. We will iterate and experiment with the following deep learning techniques to optimize performance:
   * Image data augmentation (random rotation and random mirroring of the images in Tensorflow)
   * Transfer learning - leveraging a pretrained model
   * Exploring regularization techniques to reduce overfitting, early stopping, and batch normalization
-5. Lastly, we seek to create an interactive tool in Streamlit to classify images in real time.
+6. Lastly, we seek to create an interactive tool in Streamlit to classify images in real time.
 
 
 
@@ -65,19 +65,26 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 [The Cornell Lab of Ornithology - All About Birds](https://www.allaboutbirds.org/guide/browse/taxonomy)
 
 # EDA:
-![Hierarchy](/Visualizations/hierarchy.png)
+![Hierarchy](/Visualizations/hierarchy_new.png)
 
-* What do we see here?
+* In the original dataset, we were given the species name along with a collection of images (shown on the right). You can see that each class of species shows only one bird in each photo, and they are generally scaled towards the center of the image. For this reason, we did not have to worry about bounding boxes or needed to additional image pre-processing.
+* I used the [The Cornell Lab of Ornithology](https://www.allaboutbirds.org/guide/browse/taxonomy) to match each of the 200 species to their respective taxonomical order and family.
 
-![Top 10 Families](/Visualizations/top10families.png)
 
-* What do we see here?
+![Order bar chart](/Visualizations/order_hist.png)
+* Once we mapped each species to their taxonomical order, we can see that there is one predominant class, Passeriformes. This comprises 67% of the image data. One interesting note here is that Passeriformes comprise more than half of all bird species, and they are generally known as perching birds.
 
-![Top 10 Families](/Visualizations/family_hist.png)
-* What do we see here?
 
-![Top 10 Families](/Visualizations/order_hist.png)
-* What do we see here?
+![Family bar chart](/Visualizations/family_hist.png)
+* At the family level, we can see that there are similar majority classes within the 35 families shown. The two largest groups (Parulidae and Passerellidae) both belong to the Passeriformes order.
+
+
+![Top 10 Families](/Visualizations/top_family_chart.png)
+
+* Similar to the two charts above, we can see that families within the Passeriformes order generally makes up the most common families.
+* New World Warblers (Parulidae) and New World Sparrows (Passerellidae) make up 15% and 12% of the images. The only order outside of the Passeriformes are the Charadriiformes' family of Laridae (Gulls, Terns, and Skimmers), which make up nearly 8% of our images.
+
+
 
 
 # Findings & Recommendations:

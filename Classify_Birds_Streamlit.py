@@ -1,16 +1,9 @@
-import pickle
+# Imports & Setup:
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
-from keras.applications.vgg16 import preprocess_input
-from keras.applications.vgg16 import decode_predictions
-from keras.applications.vgg16 import VGG16
-
-# Imports & Setup:
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -21,25 +14,18 @@ import PIL.Image
 from PIL import Image
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn.metrics import ConfusionMatrixDisplay
-
-
-
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
-from tensorflow.keras import utils
-from tensorflow.keras import layers
-from tensorflow.keras.callbacks import EarlyStopping
-
 tf.random.set_seed(42)
+
+
 
 #load models first to improve performance
 order_model=tf.keras.models.load_model('saved_models/order_est_v2.h5')
 family_model=tf.keras.models.load_model('saved_models/species_est_g.h5')
 species_model=tf.keras.models.load_model('saved_models/species_t3.h5')
 
+# streamlit code
 page = st.selectbox("Navigation", ["Tool", "About"])
 if page == "Tool":
 
@@ -353,14 +339,14 @@ if page == "Tool":
         st.write("")
         st.write("*Fun bird facts provided by [The Cornell Lab](https://www.allaboutbirds.org/guide/browse/taxonomy) and [Wikipedia](https://en.wikipedia.org/wiki/Main_Page)  *")
 
-
+# Page to read about the project 
 elif page == "About":
-    st.title("About this Project")
+    st.title("")
     st.write("")
     st.markdown("")
 
     def read_markdown_file(markdown_file):
         return Path(markdown_file).read_text()
 
-    intro_markdown = read_markdown_file("README.md")
+    intro_markdown = read_markdown_file("about_streamlit.md")
     st.markdown(intro_markdown, unsafe_allow_html=True)
