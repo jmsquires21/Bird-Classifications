@@ -1,67 +1,117 @@
 
-# **Capstone Project: Bird Image Classification by Taxonomy**
+# **Classifying North American Birds**
 ### By: Jamie Squires
 
 # Executive Summary
 ## Background & Overview
 
+In recent years, image classification has become an integral aspect of machine learning. Within computer vision, there are focuses on image classification, localization, image segmentation, and object detection. Among these areas, image classification is generally regarded as the most fundamental piece of digital image analysis. Although image classification can be approached by both supervised and unsupervised learning methods, deep learning has emerged as the leader in image classification. In particular, the use of neural networks, specifically convolutional neural networks have become the go-to practice in this area.
 
-
-
-
+Image classification has many use cases in technology and in our daily lives. Whether it's identifying a stop sign for self-driving cars, medical image analysis, or identifying you and your friends in a tagged photo on social media, the applications for computer vision are abundant. Despite the obvious testament to technology, can we use computer vision and image classification to promote protection of the environment and deepen the appreciation for natural life around us?
 
 ## Problem Statement
-Given the amount of overlap between the two data-centric specialties of 'Data Science' vs 'Analytics', it would be intriguing to see if there's a tangible difference in the subject matter amongst topics in the Data Science and Analytics subreddit. For the purposes of this investigation, we'd like to answer the following question:
 
-* Can we accurately categorize reddit posts from the Data Science or Analytics subreddit?
+According to several studies, environmental knowledge can facilitate attitude formation and subsequent behaviors. In one paper from [the U.S. National Library of Medicine](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5839573/) "Loss of familiarity with the natural world, particularly in Western countries, is resulting in a loss of environmental knowledge–including the ability to identify even the most common species. Possessing at least basic animal and plant identification skills is often emphasized as a prerequisite for understanding and appreciating biodiversity." Essentially, the research shows that the more aware you are of different species around you, you're more likely to appreciate and understand subsequent species. This project aims to develop a model and tool to accurately identify North American birds in order to promote a fundamental knowledge of bird taxonomy, with the ultimate goal of empowering end users to further conservation efforts to protect birds.
 
-
-## Methodology
-
-We will perform a variety of classification methods to predict which subreddit titles came from which subreddit (Data Science vs Analytics) using different NLP vectorizers to assess accuracy
-
-#### Success Metrics:
-* Optimize for the highest accuracy score
+* Can we use deep learning techniques to accurately predict bird images with their respective species?
+* Can we create a useful tool to identify birds?
 
 
+## Data & Methodology
+
+We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) for this project, which contains 11,788 images, with 200 categories of bird species found throughout North America. Each category contains roughly 60 images per species. We will focus on deep learning techniques and utilize neural networks to train our model.
+
+### Success Metrics:
+* Optimize for the highest accuracy score at the taxonomic order, family, and species level
+* Create Streamlit application to classify new bird images in real time
+
+### Methodology
+1.	Explore the data, clean, transform images into arrays, condense and scale
+2.	Run preliminary models, assess levels of accuracy
+3.  In order to reduce the large number of classes (200), individual research was conducted to add in the taxonomic order and family into the dataset in order to improve the model's predictive power. The taxonomic hierarchy information came from the [The Cornell Lab of Ornithology](https://www.allaboutbirds.org/guide/browse/taxonomy).
+3.	We will build 3 separate neural networks to classify birds at the following levels:
+    * Order (12 classes)
+    * Family (35 classes)
+    * Species (200 classes)
+4. We will iterate and experiment with the following deep learning techniques to optimize performance:
+  * Image data augmentation (random rotation and random mirroring of the images in Tensorflow)
+  * Transfer learning - leveraging a pretrained model
+  * Exploring regularization techniques to reduce overfitting, early stopping, and batch normalization
+5. Lastly, we seek to create an interactive tool in Streamlit to classify images in real time.
 
 
 
-## Data Dictionary
+### Data Dictionary
+
+
+|       Column      |   Type  |              Dataset             | Calculated Field |                                Description                               |
+|:-----------------:|:-------:|:--------------------------------:|:----------------:|:------------------------------------------------------------------------:|
+| Image Id          | integer | class_map_taxonomy_directory.csv | 0                | Unique ID for each image in dataset, from original data source           |
+| Image Name        | object  | class_map_taxonomy_directory.csv | 0                | Image name, directory for each image in it's respective folder           |
+| Is Training Image | integer | class_map_taxonomy_directory.csv | 0                | Recommended train/test split from the original datasource (50/50 split)  |
+| Class Id          | integer | class_map_taxonomy_directory.csv | 0                | Unique ID for each class (species) in dataset, from original data source |
+| Class Name        | object  | class_map_taxonomy_directory.csv | 0                | Species name, directory folder for each class                            |
+| Order             | object  | class_map_taxonomy_directory.csv | 1                | Taxonomical order, as denoted in Cornell Lab (cited below)               |
+| Order_Num_Seq     | integer | class_map_taxonomy_directory.csv | 1                | Order ID, matching to the order from Cornell Lab (1-12)                  |
+| Species           | object  | class_map_taxonomy_directory.csv | 1                | Taxonomical species group, as denoted in Cornell Lab (cited below)       |
+| Species_Num_Seq   | integer | class_map_taxonomy_directory.csv | 1                | Species group ID, matching to the species group from Cornell Lab (1-35)  |
+| Family            | object  | class_map_taxonomy_directory.csv | 1                | Taxonomical family, as denoted in Cornell Lab (cited below)              |
+| Family_Num_Seq    | integer | class_map_taxonomy_directory.csv | 1                | Family ID, matching to the family from Cornell Lab (1-35)                |
 
 **Data Sources**
+
+[The Caltech-UCSD Birds-200-2011 Dataset](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html)
+
+[The Cornell Lab of Ornithology - All About Birds](https://www.allaboutbirds.org/guide/browse/taxonomy)
+
+# EDA:
+![Hierarchy](/Visualizations/hierarchy.png)
+
+* What do we see here?
+
+![Top 10 Families](/Visualizations/top10families.png)
+
+* What do we see here?
+
+![Top 10 Families](/Visualizations/family_hist.png)
+* What do we see here?
+
+![Top 10 Families](/Visualizations/order_hist.png)
+* What do we see here?
+
 
 # Findings & Recommendations:
 
 
 ### Results
-* I performed two passes of various classification models to assess which one would yield the highest accuracy score.
-* Based on our results from my first pass of classification models, I saw that Logistic Regression, Random Forests, and Gradient Boost performed the best. I tuned these models using GridSearch as shown in the table below.
+* After multiple iterations, the final models were selected and compiled below.
+* As expected, we see that the model that was run at the order level (12 classes) had the highest performance at 87.6%. This model was the most flexible in that it responded positively to L2 regularization, batch normalization, and dropout layers. The family and species level models had a significantly lower accuracy level due to the increase in number of classes.
 
-|    Vectorizer   |     Classifier     | Cross Val Score | Training Accuracy | Test Accuracy |
-|:---------------:|:------------------:|:---------------:|:-----------------:|:-------------:|
-| CountVectorizer | LogisticRegression | 0.8009          | 0.9094            | 0.8070        |
-| TF-IDF          | LogisticRegression | 0.8022          | 0.8898            | 0.8064        |
-| CountVectorizer | Gradient Boost     | 0.7898          | 0.8167            | 0.7946        |
-| TF-IDF          | Naïve Bayes        | 0.7861          | 0.9382            | 0.7936        |
-| TF-IDF          | RandomForests      | 0.7844          | 0.8822            | 0.7886        |
-| TF-IDF          | Gradient Boost     | 0.7860          | 0.8260            | 0.7886        |
-| TF-IDF          | Decision Trees     | 0.7590          | 0.8530            | 0.7538        |
-| TF-IDF          | KNN                | 0.7500          | 0.7596            | 0.7451        |
+| Class Level    | Number of Classes | Baseline Accuracy | Training Accuracy | Testing Accuracy |
+|:--------------:|:-----------------:|:-----------------:|:-----------------:|:----------------:|
+|      Order     | 12                | 67.0%             | 99.4%             | 87.6%            |
+|     Family     | 35                | 15.2%             | 98.7%             | 61.1%            |
+|     Species    | 200               | 0.5%              | 86.3%             | 30.5%            |
 
 
-### Findings:
-* The Logistic Regression with a Count Vectorizer model performed the best, with a testing accuracy of 80.7%.
-* In our dataset, 'Data Science' had a baseline accuracy of ~50%, thus we see that our model did better than the baseline (81% vs 50%).
-* Most of the remaining models performed between 75%-79%.
-* Based on these results, we can see that the two subreddits of Data Science and Analytics have a lot of overlap, with many terms in common. This may be one factor as to why our models hit a ceiling with the best accuracy at 80.7%.
+### Closer Look at Order
 
-### Recommendation:
+![Confusion Matrix Order](/Visualizations/order_confusion_matrix.png)
 
-* Use the Logistic Regression x CountVectorizer model to predict the analytics vs data science subreddit classification. This model got 80.7% of our predictions correct.
+* Given that the Order model had the best scores and is the easiest to view in a confusion matrix,  we can see that Passeriformes performed the best at 96% accuracy. This is intuitive because Passeriformes was the majority class, making up 67% of the images.
+* On the other hand, we see that Gaviiformes and Cuculiformes struggled with only 33% and 35% accuracy, respectively. They were both relatively small classes.
+*For Gaviiformes, we see that the predictions were across the board, and there wasn't a dominant prediction class. However, Cuculiformes were classified as Passeriformes 60% of the time. Upon further manual inspection, they were difficult to distinguish from various Passeriformes species.
+
+### Learnings:
+* Given the extensive number of classes in the original dataset (the 200 species), this was a big limiting factor in reaching reasonably high accuracy in our model. By aggregating the data using the taxonomic hierarchy structure, this proved to be a good solution to the issue of too many classes. It was also interesting to see how model performance changed once we reduced the number of classes to orders and families.
+* The models seemed to benefit from data augmentation, with adding Tensorflow's layers.RandomRotation and layers.RandomFlip step in the Sequential() setup. Leveraging an existing pre-trained model and implementing transfer learning also had a huge impact on the accuracy levels. I used MobileNet V2.
+* Early stopping, regularization, and adding dropout layers also benefitted my model's performance.
+* In order to further improve the accuracy of our neural network, I would pursue obtaining more computing power to run more advanced models. I used Google Colab Pro to run the models above, but I would've ideally had access to AWS. I was unable to obtain the adequate number of GPU instances, but given more time, I'd like to find some other resources.
 
 
-
+### Next Steps:
+* Address the issue of imbalanced classes
+* I'd like to continue to develop more advanced models by gaining access to AWS or another hosted server to eliminate bandwidth issues
 
 
 
@@ -73,6 +123,11 @@ We will perform a variety of classification methods to predict which subreddit t
 
 **Sources Cited:**
 
-[Harvard Business School](https://online.hbs.edu/blog/post/data-analytics-vs-data-science)
 
-[Medium Article](https://medium.com/@springboard_ind/data-science-vs-data-analytics-how-to-decide-which-one-is-right-for-you-41e7bdec080e )
+[The Caltech-UCSD Birds-200-2011 Dataset](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html)
+
+[The Caltech-UCSD Birds-200-2011 Dataset Technical Report](http://www.vision.caltech.edu/visipedia/papers/CUB_200_2011.pdf)
+
+[The Cornell Lab of Ornithology- All About Birds](https://www.allaboutbirds.org/guide/browse/taxonomy)
+
+[White RL, Eberstein K, Scott DM. Birds in the playground: Evaluating the effectiveness of an urban environmental education project in enhancing school children's awareness, knowledge and attitudes towards local wildlife. PLoS One. 2018;13(3):e0193993. Published 2018 Mar 6. doi:10.1371/journal.pone.0193993](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5839573/)
