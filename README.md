@@ -5,9 +5,9 @@
 
 ## Background & Overview
 
-In recent years, image classification has become an integral aspect of machine learning. Within computer vision, there are focuses on image classification, localization, image segmentation, and object detection. Among these areas, image classification is generally regarded as the most fundamental piece of digital image analysis. Although image classification can be approached by both supervised and unsupervised learning methods, deep learning has emerged as the leader in image classification. In particular, the use of neural networks, specifically convolutional neural networks have become the go-to practice in this area.
+In recent years, image classification has become an integral aspect of machine learning. Within computer vision, there are 4 primary areas: image classification, localization, segmentation, and object detection. Among these areas, image classification is generally regarded as the most fundamental component of digital image analysis. Although image classification can be approached by both supervised and unsupervised learning methods, deep learning has emerged as the leader in image classification. In particular, the use of neural networks, specifically convolutional neural networks has become the leading practice in this area.
 
-Image classification has many use cases in technology and in our daily lives. Whether it's identifying a stop sign for self-driving cars, medical image analysis, or identifying you and your friends in a tagged photo on social media, the applications for computer vision are abundant. Despite the obvious testament to technology, can we use computer vision and image classification to promote protection of the environment and deepen the appreciation for natural life around us?
+Image classification has many use cases in technology and in our daily lives. Whether it's identifying a stop sign for self-driving cars, medical image analysis, or identifying friends in a tagged photo on social media, the applications for computer vision are abundant. Despite the clear testament to technology, can we use computer vision and image classification to promote protection of the environment and deepen the appreciation for nature around us?
 
 ## Problem Statement
 
@@ -29,15 +29,16 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 1.	Explore the data, clean, transform images into arrays, condense and scale
 2.	Run preliminary models, assess levels of accuracy
 3.  In order to reduce the large number of classes (200), individual research was conducted to add in the taxonomic order and family into the dataset in order to improve the model's predictive power. The taxonomic hierarchy information came from the [The Cornell Lab of Ornithology](https://www.allaboutbirds.org/guide/browse/taxonomy).
-4.	We will build 3 separate neural networks to classify birds at the following levels:
+4.	Build 3 separate neural networks to classify birds at the following levels:
     * Order (12 classes)
     * Family (35 classes)
     * Species (200 classes)
-5. We will iterate and experiment with the following deep learning techniques to optimize performance:
+5. Iterate and experiment with the following deep learning techniques to optimize performance:
   * Image data augmentation (random rotation and random mirroring of the images in Tensorflow)
   * Transfer learning - leveraging a pretrained model
   * Exploring regularization techniques to reduce overfitting, early stopping, and batch normalization
-6. Lastly, we seek to create an interactive tool in Streamlit to classify images in real time.
+6. Create an interactive tool in Streamlit to classify unseen images
+
 
 
 
@@ -65,34 +66,30 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 [The Cornell Lab of Ornithology - All About Birds](https://www.allaboutbirds.org/guide/browse/taxonomy)
 
 # EDA:
+
 ![Hierarchy](/Visualizations/hierarchy_new.png)
 
-* In the original dataset, we were given the species name along with a collection of images (shown on the right). You can see that each class of species shows only one bird in each photo, and they are generally scaled towards the center of the image. For this reason, we did not have to worry about bounding boxes or needed to additional image pre-processing.
-* I used the [The Cornell Lab of Ornithology](https://www.allaboutbirds.org/guide/browse/taxonomy) to match each of the 200 species to their respective taxonomical order and family.
+* In the original dataset, we were given the species name along with a collection of images (shown on the right). You can see that each class of species shows only one bird in each photo, and they are generally scaled towards the center of the image. For this reason, we did not have to consider bounding boxes or additional image pre-processing.
+* I used the [The Cornell Lab of Ornithology's Taxonomic Guide](https://www.allaboutbirds.org/guide/browse/taxonomy) to match each of the 200 species to their respective taxonomical order and family.
 
 
 ![Order bar chart](/Visualizations/order_hist.png)
-* Once we mapped each species to their taxonomical order, we can see that there is one predominant class, Passeriformes. This comprises 67% of the image data. One interesting note here is that Passeriformes comprise more than half of all bird species, and they are generally known as perching birds.
+* Once each species was mapped to their taxonomical order, one predominant class, Passeriformes, emerged. This comprises 67% of the image data. One interesting note here is that Passeriformes comprise more than half of all bird species.
 
 
 ![Family bar chart](/Visualizations/family_hist.png)
 * At the family level, we can see that there are similar majority classes within the 35 families shown. The two largest groups (Parulidae and Passerellidae) both belong to the Passeriformes order.
-
-
-![Top 10 Families](/Visualizations/top_family_chart.png)
-
-* Similar to the two charts above, we can see that families within the Passeriformes order generally makes up the most common families.
 * New World Warblers (Parulidae) and New World Sparrows (Passerellidae) make up 15% and 12% of the images. The only order outside of the Passeriformes are the Charadriiformes' family of Laridae (Gulls, Terns, and Skimmers), which make up nearly 8% of our images.
 
 
 
 
-# Findings & Recommendations:
+# Modeling:
 
 
 ### Results
-* After multiple iterations, the final models were selected and compiled below.
-* As expected, we see that the model that was run at the order level (12 classes) had the highest performance at 87.6%. This model was the most flexible in that it responded positively to L2 regularization, batch normalization, and dropout layers. The family and species level models had a significantly lower accuracy level due to the increase in number of classes.
+The final three neural network models were selected and compiled below:
+
 
 | Class Level    | Number of Classes | Baseline Accuracy | Training Accuracy | Testing Accuracy |
 |:--------------:|:-----------------:|:-----------------:|:-----------------:|:----------------:|
@@ -100,25 +97,25 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 |     Family     | 35                | 15.2%             | 98.7%             | 61.1%            |
 |     Species    | 200               | 0.5%              | 86.3%             | 30.5%            |
 
+-----------------INSERT Chart of model pros & Cons
+* As expected, we see that the model that was run at the order level (12 classes) had the highest performance at 87.6%. This model was also the most flexible in that it responded positively to L2 regularization, batch normalization, and dropout layers.
+* The family and species level models had a significantly lower accuracy level due to the increase in number of classes. Additionally, I found that these models reacted more unfavorably to regularization or further dense layers than the order model.
 
-### Closer Look at Order
+#### Taxonomic Order Modeling Results
 
 ![Confusion Matrix Order](/Visualizations/order_confusion_matrix.png)
 
-* Given that the Order model had the best scores and is the easiest to view in a confusion matrix,  we can see that Passeriformes performed the best at 96% accuracy. This is intuitive because Passeriformes was the majority class, making up 67% of the images.
-* On the other hand, we see that Gaviiformes and Cuculiformes struggled with only 33% and 35% accuracy, respectively. They were both relatively small classes.
-*For Gaviiformes, we see that the predictions were across the board, and there wasn't a dominant prediction class. However, Cuculiformes were classified as Passeriformes 60% of the time. Upon further manual inspection, they were difficult to distinguish from various Passeriformes species.
+* Given that the Order model had the best scores and can be easily summarized in a confusion matrix,  we can see that Passeriformes performed the best at 96% accuracy. This is intuitive because Passeriformes was the majority class, making up 67% of the images.
+* On the other hand, we see that Gaviiformes and Cuculiformes struggled with only 33% and 35% accuracy, respectively. They were both relatively mid to small classes.
+* Gaviiformes' predictions were across the board, and there wasn't a dominant prediction class. However, Cuculiformes were classified as Passeriformes 60% of the time. Upon further manual inspection, they proved to be difficult to distinguish from various Passeriformes species.
 
-### Learnings:
-* Given the extensive number of classes in the original dataset (the 200 species), this was a big limiting factor in reaching reasonably high accuracy in our model. By aggregating the data using the taxonomic hierarchy structure, this proved to be a good solution to the issue of too many classes. It was also interesting to see how model performance changed once we reduced the number of classes to orders and families.
-* The models seemed to benefit from data augmentation, with adding Tensorflow's layers.RandomRotation and layers.RandomFlip step in the Sequential() setup. Leveraging an existing pre-trained model and implementing transfer learning also had a huge impact on the accuracy levels. I used MobileNet V2.
-* Early stopping, regularization, and adding dropout layers also benefitted my model's performance.
-* In order to further improve the accuracy of our neural network, I would pursue obtaining more computing power to run more advanced models. I used Google Colab Pro to run the models above, but I would've ideally had access to AWS. I was unable to obtain the adequate number of GPU instances, but given more time, I'd like to find some other resources.
+### Learnings & Next Steps :
+* Given the extensive number of classes in the original dataset (the 200 species), this was a big limiting factor in reaching reasonably high accuracy in our model. By aggregating the data using the taxonomic hierarchy structure, we were able to significantly improve our predictions and provide a tiered approach to accuracy.
+* The models seemed to strongly benefit from data augmentation, with adding Tensorflow's layers.RandomRotation and layers.RandomFlip step in the Sequential() setup. Leveraging an existing pre-trained model and implementing transfer learning also had a huge impact on the accuracy levels. I used MobileNetV2. Early stopping, regularization, and adding dropout layers also benefitted the order model's performance.
+* In order to further improve the accuracy of our neural network, I would pursue obtaining more computing power to run more advanced models. I used Google Colab Pro, but I'd like to find a more scalable solution with more GPU instances in the future. Google Cloud and AWS are two options I'd consider to eliminate bandwidth issues.
+* In the future, I'd like to get more image data to improve the model. 60 images per class 
+*Inbalanced classes
 
-
-### Next Steps:
-* Address the issue of imbalanced classes
-* I'd like to continue to develop more advanced models by gaining access to AWS or another hosted server to eliminate bandwidth issues
 
 
 
