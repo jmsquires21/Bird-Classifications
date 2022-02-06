@@ -11,7 +11,7 @@ Image classification has many use cases in technology and in our daily lives. Wh
 
 ## Problem Statement
 
-According to several studies, environmental knowledge can impact one's attitudes and subsequent behaviors. In one paper from [the U.S. National Library of Medicine](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5839573/) "Loss of familiarity with the natural world, particularly in Western countries, is resulting in a loss of environmental knowledge–including the ability to identify even the most common species. Possessing at least basic animal and plant identification skills is often emphasized as a prerequisite for understanding and appreciating biodiversity." Essentially, the research shows that the more aware you are of different species around you, you're more likely to appreciate and understand subsequent species. This project aims to develop a model and tool to accurately identify North American birds in order to promote a fundamental knowledge of bird taxonomy, with the ultimate goal of empowering end users to further conservation efforts to protect birds.
+According to several studies, environmental knowledge can impact one's attitudes and subsequent behaviors. In one paper from [the U.S. National Library of Medicine](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5839573/) "Loss of familiarity with the natural world, particularly in Western countries, is resulting in a loss of environmental knowledge, including the ability to identify even the most common species. Possessing at least basic animal and plant identification skills is often emphasized as a prerequisite for understanding and appreciating biodiversity." Essentially, the research shows that the more aware you are of different species around you, you're more likely to appreciate and understand subsequent species. This project aims to develop a model and tool to accurately identify North American birds in order to promote a fundamental knowledge of bird taxonomy, with the ultimate goal of empowering end users to further conservation efforts to protect birds.
 
 * Can we use deep learning techniques to accurately predict bird images with their respective species?
 * Can we create a useful tool to identify birds?
@@ -77,9 +77,7 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 
 
 ![Family bar chart](/Visualizations/family_hist.png)
-* At the family level, we can see that there are similar majority classes within the 35 families shown. The two largest groups (Parulidae and Passerellidae) both belong to the Passeriformes order.
-* New World Warblers (Parulidae) and New World Sparrows (Passerellidae) make up 15% and 12% of the images.
-
+* At the family level, we can see that there are similar majority classes within the 35 families shown. The two largest groups (Parulidae and Passerellidae) both belong to the Passeriformes order. New World Warblers (Parulidae) and New World Sparrows (Passerellidae) make up 15% and 12% of the images.
 
 
 
