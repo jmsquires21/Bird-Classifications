@@ -5,13 +5,13 @@
 
 ## Background & Overview
 
-In recent years, image classification has become an integral aspect of machine learning. Within computer vision, there are 4 primary areas: image classification, localization, segmentation, and object detection. Among these areas, image classification is generally regarded as the most fundamental component of digital image analysis. Although image classification can be approached by both supervised and unsupervised learning methods, deep learning has emerged as the leader in image classification. In particular, the use of neural networks, specifically convolutional neural networks has become the leading practice in this area.
+In recent years, image classification has become an integral aspect of machine learning. Within computer vision, there are 4 primary areas: image classification, localization, segmentation, and object detection. Among these areas, image classification is generally regarded as the most fundamental component of digital image analysis. Although image classification can be approached by both supervised and unsupervised learning methods, deep learning has emerged as the leader in image classification. In particular, the use of neural networks, specifically convolutional neural networks has risen in popular practice.
 
 Image classification has many use cases in technology and in our daily lives. Whether it's identifying a stop sign for self-driving cars, medical image analysis, or identifying friends in a tagged photo on social media, the applications for computer vision are abundant. Despite the clear testament to technology, can we use computer vision and image classification to promote protection of the environment and deepen the appreciation for nature around us?
 
 ## Problem Statement
 
-According to several studies, environmental knowledge can facilitate attitude formation and subsequent behaviors. In one paper from [the U.S. National Library of Medicine](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5839573/) "Loss of familiarity with the natural world, particularly in Western countries, is resulting in a loss of environmental knowledge–including the ability to identify even the most common species. Possessing at least basic animal and plant identification skills is often emphasized as a prerequisite for understanding and appreciating biodiversity." Essentially, the research shows that the more aware you are of different species around you, you're more likely to appreciate and understand subsequent species. This project aims to develop a model and tool to accurately identify North American birds in order to promote a fundamental knowledge of bird taxonomy, with the ultimate goal of empowering end users to further conservation efforts to protect birds.
+According to several studies, environmental knowledge can impact one's attitudes and subsequent behaviors. In one paper from [the U.S. National Library of Medicine](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5839573/) "Loss of familiarity with the natural world, particularly in Western countries, is resulting in a loss of environmental knowledge–including the ability to identify even the most common species. Possessing at least basic animal and plant identification skills is often emphasized as a prerequisite for understanding and appreciating biodiversity." Essentially, the research shows that the more aware you are of different species around you, you're more likely to appreciate and understand subsequent species. This project aims to develop a model and tool to accurately identify North American birds in order to promote a fundamental knowledge of bird taxonomy, with the ultimate goal of empowering end users to further conservation efforts to protect birds.
 
 * Can we use deep learning techniques to accurately predict bird images with their respective species?
 * Can we create a useful tool to identify birds?
@@ -78,7 +78,7 @@ We will leverage the [The Caltech-UCSD Birds 200-2011 Dataset](http://www.vision
 
 ![Family bar chart](/Visualizations/family_hist.png)
 * At the family level, we can see that there are similar majority classes within the 35 families shown. The two largest groups (Parulidae and Passerellidae) both belong to the Passeriformes order.
-* New World Warblers (Parulidae) and New World Sparrows (Passerellidae) make up 15% and 12% of the images. The only order outside of the Passeriformes are the Charadriiformes' family of Laridae (Gulls, Terns, and Skimmers), which make up nearly 8% of our images.
+* New World Warblers (Parulidae) and New World Sparrows (Passerellidae) make up 15% and 12% of the images.
 
 
 
@@ -121,8 +121,8 @@ Additional Notes:
 ### Learnings & Next Steps :
 * Given the extensive number of classes in the original dataset (the 200 species), this was a big limiting factor in reaching reasonably high accuracy in our model. By aggregating the data using the taxonomic hierarchy structure, we were able to significantly improve our predictions and provide a tiered approach to accuracy.
 * The models seemed to strongly benefit from data augmentation, with adding Tensorflow's layers.RandomRotation and layers.RandomFlip step in the Sequential() setup. Leveraging an existing pre-trained model and implementing transfer learning also had a huge impact on the accuracy levels. I used MobileNetV2. Early stopping, regularization, and adding dropout layers also benefitted the order model's performance.
-* In order to further improve the accuracy of the model, I would pursue obtaining more computing power to run more advanced models. I used Google Colab Pro, but I'd like to find a more scalable solution with more GPU instances in the future. Google Cloud and AWS are two options I'd consider to eliminate bandwidth issues.
 * In the future, I'd like to get more images to improve the model. 60 images per class proved to not be enough data to accurately classify bird images at the species level. Augmenting the data through slight rotations and mirroring helped but it wasn't sufficient to handle the imbalanced classes. On that note, it would be especially helpful to gather more images in the smaller classes that performed poorly, such as the Gaviiformes and Cuculiformes.
+* In order to further improve the accuracy of the model, I would pursue obtaining more computing power to run more advanced models. I used Google Colab Pro, but I'd like to find a more scalable solution with more GPU instances in the future. Google Cloud and AWS are two options I'd consider to eliminate bandwidth issues.
 
 
 

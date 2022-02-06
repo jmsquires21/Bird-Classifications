@@ -348,5 +348,5 @@ elif page == "About":
     def read_markdown_file(markdown_file):
         return Path(markdown_file).read_text()
 
-    intro_markdown = read_markdown_file("about_streamlit.md")
+    intro_markdown = read_markdown_file("Step5b_About_Page_Streamlit.md")
     st.markdown(intro_markdown, unsafe_allow_html=True)
